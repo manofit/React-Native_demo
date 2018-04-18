@@ -1,0 +1,3 @@
+rootProject.name = 'Test04_Props'
+
+include ':app'
