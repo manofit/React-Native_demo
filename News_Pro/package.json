@@ -8,7 +8,10 @@
   },
   "dependencies": {
     "react": "16.3.1",
-    "react-native": "0.55.3"
+    "react-native": "0.55.3",
+    "react-native-scrollable-tab-view": "^0.8.0",
+    "react-native-tab-navigator": "^0.3.4",
+    "react-navigation": "^1.5.11"
   },
   "devDependencies": {
     "babel-jest": "22.4.3",
