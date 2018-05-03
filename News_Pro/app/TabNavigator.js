@@ -3,61 +3,173 @@ import {
     Image,
     StyleSheet, 
 } from 'react-native'
-import { TabNavigator } from 'react-native-tab-navigator'
+import { TabNavigator } from 'react-navigation'
 import Home from './pages/Home'
 import Live from './pages/Live'
 import Mine from './pages/Mine'
 import Video from './pages/Video'
 
-export default class MainTab extends PureComponent {
+const MainTabSelectedIcon = require("./../assets/images/i_home_foc.png");
+const MainTabUnSelectedIcon = require("./../assets/images/i_home.png");
+const LiveTabUnSelectedIcon = require("./../assets/images/i_live.png");
+const LiveTabSelectedIcon = require("./../assets/images/i_live_foc.png");
+const MineTabUnSelectedIcon = require("./../assets/images/i_mine.png");
+const MineTabSelectedIcon = require("./../assets/images/i_mine_foc.png");
+const VideoTabUnSelectedIcon = require("./../assets/images/i_video.png");
+const VideoTabSelectedIcon = require("./../assets/images/i_video_foc.png");
 
-    constructor(props) {
-        super(props);
+export default MainTab = TabNavigator({
+    Home: {
+        screen: Home,
+        navigationOptions:({navigation, screeProps}) => ({
+            //这里设置StackNavigator属性和一般情况下Tabbar不同页面可能会不同的属性
 
-        this.state = {
-            selectedTab: '首页',
-        }
+            //设置StackNavigator属性
+            header:null,
+            headerTitle: '首页',
+            headerStyle: styles.navigator,
+            headerTitleStyle: styles.navigatorTitle,
+            gesturesEnabled:true,
+
+            //这里设置Tabbar不同页面可能会不同的属性
+            tabBarVisible: true,
+            tabBarLabel:'首页',
+            tabBarIcon:(({tintColor,focused}) => {
+                return(
+                    <Image 
+                        source={focused ? MainTabSelectedIcon : MainTabUnSelectedIcon}
+                        style={styles.tabbarImage} 
+                    />
+                )
+            }),
+        })
+    },
+    Live: {
+        screen: Live,
+        navigationOptions:({navigation, screeProps}) => ({
+            //这里设置StackNavigator属性和一般情况下Tabbar不同页面可能会不同的属性
+
+            //设置StackNavigator属性
+            header:null,
+            headerTitle: '直播',
+            headerStyle:styles.navigator,
+            headerTitleStyle:styles.navigatorTitle,
+            gesturesEnabled:true,
+
+            //这里设置Tabbar不同页面可能会不同的属性
+            tabBarVisible: true,
+            tabBarLabel:'直播',
+            tabBarIcon:(({tintColor,focused}) => {
+                return(
+                    <Image 
+                        source={focused ? LiveTabSelectedIcon : LiveTabUnSelectedIcon}
+                        style={styles.tabbarImage} 
+                    />
+                )
+            }),
+        })
+    },
+    Video: {
+        screen: Video,
+        navigationOptions:({navigation, screeProps}) => ({
+            //这里设置StackNavigator属性和一般情况下Tabbar不同页面可能会不同的属性
+
+            //设置StackNavigator属性
+            header:null,
+            headerTitle: '视频',
+            headerStyle:styles.navigator,
+            headerTitleStyle:styles.navigatorTitle,
+            gesturesEnabled:true,
+
+            //这里设置Tabbar不同页面可能会不同的属性
+            tabBarVisible: true,
+            tabBarLabel:'视频',
+            tabBarIcon:(({tintColor,focused}) => {
+                return(
+                    <Image 
+                        source={focused ? VideoTabSelectedIcon : VideoTabUnSelectedIcon}
+                        style={styles.tabbarImage} 
+                    />
+                )
+            }),
+        })
+    },
+    Mine: {
+        screen: Mine,
+        navigationOptions:({navigation, screeProps}) => ({
+            //这里设置StackNavigator属性和一般情况下Tabbar不同页面可能会不同的属性
+
+            //设置StackNavigator属性
+            header:null,
+            headerTitle: '我的',
+            headerStyle:styles.navigator,
+            headerTitleStyle:styles.navigatorTitle,
+            gesturesEnabled:true,
+
+            //这里设置Tabbar不同页面可能会不同的属性
+            tabBarVisible: true,
+            tabBarLabel:'我的',
+            tabBarIcon:(({tintColor,focused}) => {
+                return(
+                    <Image 
+                        source={focused ? MineTabSelectedIcon : MineTabUnSelectedIcon}
+                        style={styles.tabbarImage} 
+                    />
+                )
+            }),
+        })
     }
+},{
+    //这里设置的是一般情况下Tabbar共同的属性
+    tabBarPosition:'bottom', // 设置tabbar的位置，iOS默认在底部，安卓默认在顶部。（属性值：'top'，'bottom')
+    swipeEnabled:false, // 是否允许在标签之间进行滑动。
+    animationEnabled: false, // 是否在更改标签时显示动画。
+    lazy:true, // 是否根据需要懒惰呈现标签，而不是提前制作，意思是在app打开的时候将底部标签栏全部加载，默认false,推荐改成true哦。
+    initialRouteName:'', // 设置默认的页面组件
+    backBehavior:'none', // 按 back 键是否跳转到第一个Tab(首页)， none 为不跳转
+    tabBarOptions:{
 
-    render(){
-        return (
-            <TabNavigator>
-                { this._renderTabbarItem('首页', require("./../assets/images/i_home.png"), require("./../assets/images/i_home_foc.png"), Home) }
-                { this._renderTabbarItem('视频', require("./../assets/images/i_video.png"), require("./../assets/images/i_video_foc.png"), Video) }
-                { this._renderTabbarItem('直播', require("./../assets/images/i_live.png"), require("./../assets/images/i_live_foc.png"), Live) }
-                { this._renderTabbarItem('我的', require("./../assets/images/i_mine.png"), require("./../assets/images/i_mine_foc.png"), Mine) }
-            </TabNavigator>
-        )
-    }
+         // iOS属性
+          activeTintColor:'#d81e06', // label和icon的前景色 活跃状态下（选中）。
+          inactiveTintColor:'#515151', // label和icon的前景色 不活跃状态下(未选中)。
+         // activeBackgroundColor:'blue', // label和icon的背景色 活跃状态下（选中） 。
+         // inactiveBackgroundColor:'green', // label和icon的背景色 不活跃状态下（未选中）。
+         // showLabel:true, // 是否显示label，默认开启。
+         // style:{}, // tabbar的样式。
+          labelStyle:{
+              fontSize: 12,
+          }, //label的样式。
 
-    _renderTabbarItem(selectedTab, icon, selectedIcon, Component){
-        return (
-            <TabNavigator.Item
-                selected={this.state.selectedTab === selectedTab}
-                title={selectedTab}
-                titleStyle={styles.tabText}
-                selectedTitleStyle={styles.selectedTabText}
-                renderIcon={() => <Image style={styles.icon} source={icon} />}
-                renderSelectedIcon={() => <Image style={styles.icon} source={selectedIcon} />}
-                onPress={() => this.setState({selectedTab})}
-            >
-                <Component navigation={this.props.navigation} />
-            </TabNavigator.Item>
-        )
+        // 安卓属性
+        // activeTintColor:'', // label和icon的前景色 活跃状态下（选中） 。
+        // inactiveTintColor:'', // label和icon的前景色 不活跃状态下(未选中)。
+        // showIcon:true, // 是否显示图标，默认关闭。
+        // showLabel:true, //是否显示label，默认开启。
+        // style:{}, // tabbar的样式。
+        // labelStyle:{}, // label的样式。
+        // upperCaseLabel:false, // 是否使标签大写，默认为true。
+        // pressColor:'', // material涟漪效果的颜色（安卓版本需要大于5.0）。
+        // pressOpacity:'', // 按压标签的透明度变化（安卓版本需要小于5.0）。
+        // scrollEnabled:false, // 是否启用可滚动选项卡。
+        // tabStyle:{}, // tab的样式。
+        // indicatorStyle:{}, // 标签指示器的样式对象（选项卡底部的行）。安卓底部会多出一条线，可以将height设置为0来暂时解决这个问题。
+        // labelStyle:{}, // label的样式。
+        // iconStyle:{}, // 图标的样式。
     }
-}
+})
+
 
 const styles = StyleSheet.create({
-    tabText:{
-        color:'#515151',
-        fontSize:12,
+    navigatorTitle:{
+        fontSize:17,
+        color:'white',
     },
-    selectedTabText:{
-        color:'#d81e06',
+    navigator:{
+        backgroundColor:'#d81e06',
     },
-    icon:{
+    tabbarImage:{
         width:25,
         height:25,
         marginBottom:-3,
-    }
+    },
 })

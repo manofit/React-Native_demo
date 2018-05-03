@@ -18,7 +18,7 @@ export default class Home extends PureComponent {
         return(
             <View style={styles.container}>
                 
-                <StatusBar backgroundColor={'rgba(255,255,255,0)'} translucent={true} animated={true} />
+                <StatusBar backgroundColor={'rgba(255,255,255,1)'} translucent={true} animated={true} />
 
 
             </View>
