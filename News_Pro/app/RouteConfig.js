@@ -19,15 +19,15 @@ const RouteConfig = {
     },
     NewsDetail: {
         screen: NewsDetail,
-        //navigationOptions: ({navigation}) => ({header: null, gesturesEnable: true})
+        navigationOptions: ({navigation}) => ({header: null, gesturesEnable: true})
     },
     VideoDetail: {
         screen: VideoDetail,
-        //navigationOptions: ({navigation}) => ({header:null, gesturesEnable:true})
+        navigationOptions: ({navigation}) => ({header:null, gesturesEnable:true})
     },
     NewsSearch: {
         screen: NewsSearch,
-        //navigationOptions: ({navigation}) => ({header: null, gesturesEnable: true})
+        navigationOptions: ({navigation}) => ({header: null, gesturesEnable: true})
     }
 }
 
