@@ -7,8 +7,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@nart/react-native-swiper": "^1.5.13",
     "react": "16.3.1",
     "react-native": "0.55.3",
+    "react-native-easy-toast": "^1.1.0",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-tab-navigator": "^0.3.4",
     "react-navigation": "^1.5.11"

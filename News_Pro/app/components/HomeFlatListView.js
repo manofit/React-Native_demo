@@ -1,0 +1,174 @@
+import React, { PureComponent } from 'react'
+import {
+    FlatList,
+    TouchableOpacity,
+    Dimensions,
+    StyleSheet,
+    Image,
+    Text,
+    View,
+    Animated,
+    Easing,
+    ImageBackground,
+} from 'react-native'
+import ajax from './../utils/fetch'
+import Toast, {DURATION} from 'react-native-easy-toast'
+
+const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+
+export default class HomeFlatListView extends PureComponent {
+
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            sourceData: [],
+            refreshing:false,
+            flatHeight: 0,
+            indexText: '',
+        }
+    }
+
+    //改变value而不需要重新re-render的变量，声明在construct外面
+    currPage = 0;
+
+    //加载数据
+    _getNewsList = () => {
+        let _this = this;
+        let requestCode = this.props.requestCode;
+
+        ajax({
+            url: `http://c.m.163.com/nc/article/headline/${requestCode}/${_this.currPage}-10.html?from=toutiao&passport=&devId=OPdeGFsVSojY0ILFe6009pLR%2FMsg7TLJv5TjaQQ6Hpjxd%2BaWU4dx4OOCg2vE3noj&size=10&version=5.5.3&spever=false&net=wifi&lat=&lon=&ts=1456985878&sign=oDwq9mBweKUtUuiS%2FPvB015PyTDKHSxuyuVq2076XQB48ErR02zJ6%2FKXOnxX046I&encryption=1&canal=appstore`,
+            success: (data)=>{
+                _this.setState({
+                    sourceData: _this.state.refreshing?data[requestCode]:[..._this.state.sourceData, ...data[requestCode]]
+                });
+                _this.currPage += 10;
+            },
+            error: (err)=>{
+                _this.refs.toast.show('网络请求异常');
+            },
+            complete: ()=>{
+                _this.state.refreshing && _this.setState({refreshing: false});
+            }
+        });
+    }
+
+    //Header视图
+    _renderHeader = () => {
+
+    }
+
+    //Footer视图
+    _renderFooter  = () => {
+        let len = this.state.sourceData.length;
+        return(
+            <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center', height:len<1?0:40}}>
+                <Image source={require("./../../assets/images/i_loading.gif")} resizeMode={'contain'} style={{width:20, height:20, marginRight: 5}} />
+                <Text>正在加载...</Text>
+            </View>
+        )
+    }
+
+    //分割线
+    _renderItemSeparatorComponent = ({highlighted}) => {
+        <View style={{height:1, backgroundColor:'#e6e6e6'}}></View>
+    }
+
+    //没有数据时候页面显示
+    _renderEmptyView = () => {
+        <View style={{height:this.state.flatHeight, backgroundColor:'#f8f8f8', justifyContent:'center', alignItems:'center'}}>
+            <Image source={require("./../../assets/images/list_placeholder.png")} resizeMode={'contain'} style={{width:80, height:60}} />
+        </View>
+    }
+
+    //设置item高度
+    _setFlatListHeight = (e) => {
+        let height = e.nativeEvent.layout.height;
+        if (this.state.flatHeight < height) {
+            this.setState({flatHeight:height})
+        }
+    }
+
+    /**
+     * 此函数用于为给定的item生成一个不重复的key
+     * key的作用是使React能够区分同类元素的不同个体，以便在刷新的时候能确定其变化的位置，减少重复渲染的开销
+     * 若不指定此函数，则默认抽取item.key作为key值，若key.item不存在，则使用数组下标
+     */
+    _keyExtractor = (item, index) => index + '';
+
+    //上拉加载更多
+    _onEndReached = () => {
+        this._getNewsList;
+    }
+
+    //下拉刷新
+    _renderRefresh = () => {
+        this.setState({refreshing: true}); //开始刷新
+        this.currPage = 0;
+        this._getNewsList();
+    }
+
+    _renderItem = ({item}) => {
+        return(
+            <View></View>
+        )
+    }
+
+    componentDidMount() {
+        this._getNewsList()
+    }
+
+    render(){
+        return(
+            <View style={styles.container}>
+                <FlatList 
+                    ref={ref => this.flatList = ref}
+                    data={this.state.sourceData}
+                    extraData={this.state.selected}
+                    keyExtractor={this._keyExtractor}
+                    renderItem={this._renderItem}
+                    //初始加载的条数，不会被卸载
+                    initialNumToRender={10}
+                    //决定当距离内容最底部还有多远时候触发onEndReached回调，数值范围：0~1。例如：0.5表示可见布局的最底端距离content最底端等于可见布局一半高度的时候调用该回调
+                    onEndReachedThreshold={0.1}
+                    //当列表被滚动到距离内容最底部不足onEndReacchedThreshold设置的距离时调用此函数
+                    onEndReached={this._onEndReached}
+                    //ListHeaderComponent={this._renderHeader}
+                    ListFooterComponent={this._renderFooter}
+                    ItemSeparatorComponent={this._renderItemSeparatorComponent}
+                    ListEmptyComponent={this._renderEmptyView}
+                    onLayout={this._setFlatListHeight}
+                    //正在加载的时候设置为true，会在界面上显示一个正在加载的提示
+                    refreshing={this.state.refreshing}
+                    //如果设置了此选项，则会在列表头部添加一个标准的RefreshControl控件，以便实现“下拉刷新”的功能。同时你需要正确设置refreshing属性。
+                    onRefresh={this._renderRefresh}
+                />
+                <Toast
+                    ref='toast'
+                    style={{backgroundColor:'black'}}
+                    position='center'
+                    opacity={0.8}
+                    textStyle={{color:'white'}}
+                />
+            </View>
+        )
+    }
+
+}
+
+const styles = StyleSheet.create({
+    container:{
+        flex: 1,
+        backgroundColor: '#F8F8F8',
+    },
+    item:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 7,
+    },
+    picItem:{
+        padding: 7,
+    }
+})
