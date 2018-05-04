@@ -39,47 +39,54 @@ export default class HomeFlatListView extends PureComponent {
 
         ajax({
             url: `http://c.m.163.com/nc/article/headline/${requestCode}/${_this.currPage}-10.html?from=toutiao&passport=&devId=OPdeGFsVSojY0ILFe6009pLR%2FMsg7TLJv5TjaQQ6Hpjxd%2BaWU4dx4OOCg2vE3noj&size=10&version=5.5.3&spever=false&net=wifi&lat=&lon=&ts=1456985878&sign=oDwq9mBweKUtUuiS%2FPvB015PyTDKHSxuyuVq2076XQB48ErR02zJ6%2FKXOnxX046I&encryption=1&canal=appstore`,
-            success: (data)=>{
+            method:'GET',
+            success: (data) => {
                 _this.setState({
                     sourceData: _this.state.refreshing?data[requestCode]:[..._this.state.sourceData, ...data[requestCode]]
                 });
                 _this.currPage += 10;
             },
-            error: (err)=>{
+            error: (err) => {
                 _this.refs.toast.show('网络请求异常');
             },
-            complete: ()=>{
+            complete: () => {
                 _this.state.refreshing && _this.setState({refreshing: false});
             }
         });
     }
 
     //Header视图
-    _renderHeader = () => {
+    /**
+     * _renderHeader = () => {
 
     }
-
+     */
+    
     //Footer视图
     _renderFooter  = () => {
         let len = this.state.sourceData.length;
         return(
             <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center', height:len<1?0:40}}>
-                <Image source={require("./../../assets/images/i_loading.gif")} resizeMode={'contain'} style={{width:20, height:20, marginRight: 5}} />
-                <Text>正在加载...</Text>
+                <Image source={require("./../../assets/images/i_loading.gif")} resizeMode={'contain'} style={{width:20, height:20, marginRight: 5, height:len<1?0:40}} />
+                <Text style={{color:'#515151'}}>正在加载...</Text>
             </View>
         )
     }
 
     //分割线
     _renderItemSeparatorComponent = ({highlighted}) => {
-        <View style={{height:1, backgroundColor:'#e6e6e6'}}></View>
+        return(
+            <View style={{height:1, backgroundColor:'#e6e6e6'}}></View>
+        )
     }
 
     //没有数据时候页面显示
     _renderEmptyView = () => {
-        <View style={{height:this.state.flatHeight, backgroundColor:'#f8f8f8', justifyContent:'center', alignItems:'center'}}>
-            <Image source={require("./../../assets/images/list_placeholder.png")} resizeMode={'contain'} style={{width:80, height:60}} />
-        </View>
+        return(
+            <View style={{height:this.state.flatHeight, backgroundColor:'#f8f8f8', justifyContent:'center', alignItems:'center', marginTop:20}}>
+                <Image source={require("./../../assets/images/list_placeholder.png")} resizeMode={'contain'} style={{width:80, height:60}} />
+            </View>
+        )
     }
 
     //设置item高度
@@ -111,10 +118,29 @@ export default class HomeFlatListView extends PureComponent {
 
     _renderItem = ({item}) => {
         return(
-            <View></View>
+            <HomeFlatListItem 
+                item={item}
+                onPressItem={this._onPressItem}
+                selected={this.state.selected === item.id}
+            />
         )
     }
 
+    _onPressItem = (item) => {
+        
+        this.setState({
+            selected: item.id
+        })
+
+        if (item['videoinfo']){
+            this.props.navigation.push('VideoDetail', {item})
+            return
+        }
+
+        this.props.navigation.push('NewsDetail', {item})
+    }
+
+    //组件渲染后开始加载数据
     componentDidMount() {
         this._getNewsList()
     }
@@ -155,6 +181,108 @@ export default class HomeFlatListView extends PureComponent {
         )
     }
 
+}
+
+class HomeFlatListItem extends React.PureComponent {
+
+    _onPress = () => {
+        this.props.onPressItem(this.props.item)
+    }
+
+    render(){
+        let item = this.props.item
+        //判断是否是三图布局
+        let isThreePic = item['imgnewextra']
+        //判断是否是视频布局
+        let isVideo = item['videoinfo']
+
+        if (isThreePic){
+            return(
+                <TouchableOpacity
+                    {...this.props}
+                    onPress={this._onPress}
+                    style={styles.picItem}
+                    activeOpacity={0.8}
+                >
+                    <View style={{justifyContent:'space-between'}}>
+                        <Text style={{fontSize:16, lineHeight:25, color:'#2c2c2c'}}>{item.title}</Text>
+
+                        <View style={{flexDirection:'row', marginVertical:5, justifyContent:'space-between'}}>
+                            <Image source={{uri:item.imgsrc}} style={{width:screenWidth*0.35, height:80}} />
+                            {
+                                item.imgnewextra.map((imgItem, index) => (
+                                    <Image source={{uri:imgItem.imgsrc}} key={index+''} style={{width:screenWidth*.3, height:80}} />
+                                ))
+                            }
+                        </View>
+
+                        <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={{marginRight:6}}>{item.source}</Text>
+                                <Text style={{marginRight:6}}>{item.replyCount}跟帖</Text>
+                            </View>
+
+                            {/*这里应该有个X号*/}
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            )
+        }
+
+        if (isVideo){
+            return(
+                <TouchableOpacity 
+                    {...this.props}
+                    onPress={this._onPress}
+                    style={styles.picItem}
+                    activeOpacity={0.8}
+                >
+                    <View style={{justifyContent:'space-between'}}>
+                        <Text style={{fontSize:16, lineHeight:25, color:'#2c2c2c'}}>{item.title}</Text>
+
+                        <ImageBackground source={{uri:item.imgsrc}} resizeMode={'cover'} style={{height:180, marginVertical:6, justifyContent:'center', alignItems:'center'}}>
+                            <View style={{width:50, height:50, borderRadius:25, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'center', alignItems:'center'}}>
+                                <Image source={require('./../../assets/images/i_play.png')} resizeMode={'contain'} style={{width:18, height:18, marginLeft:3}} />
+                            </View>
+                        </ImageBackground>
+
+                        <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={{marginRight:6}}>{item.source}</Text>
+                                <Text style={{marginRight:6}}>{item.replyCount}跟帖</Text>
+                            </View>
+
+                            {/*这里应该有个X号*/}
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            )
+        }
+
+        return(
+            <TouchableOpacity
+                {...this.props}
+                onPress={this._onPress}
+                style={styles.item}
+                activeOpacity={0.8}
+            >
+                <View style={{width:screenWidth*0.63, height:80, justifyContent:'space-between'}} >
+                    <Text style={{fontSize:16, lineHeight:25, color:'#2c2c2c'}}>{item.title}</Text>
+
+                    <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={{marginRight:6}}>{item.source}</Text>
+                                <Text style={{marginRight:6}}>{item.replyCount}跟帖</Text>
+                            </View>
+
+                            {/*这里应该有个X号*/}
+                        </View>
+                </View>
+
+                <Image source={{uri:item.imgsrc}} style={{width:screenWidth*0.3, height:80}} />
+            </TouchableOpacity>
+        )
+    }
 }
 
 const styles = StyleSheet.create({

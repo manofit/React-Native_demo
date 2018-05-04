@@ -28,7 +28,7 @@ function formatData(headers, data) {
 }
 
 export default ajax = ({url, method, data, dataType, headers, success, error, complete}) => {
-    
+
     let options = {}
 
     //默认method
@@ -44,13 +44,13 @@ export default ajax = ({url, method, data, dataType, headers, success, error, co
     //处理body
     options.method.toUpperCase() === 'POST' && (options['json'] == data ? formatData(headers, data) : '')
 
-    fetch(url, options)
-    .then((response) => !dataType || dataType === 'json' ? response.json() : response.text())
-    .then((responseJson) => {
+    fetch(url, options).then((response) => 
+        response.json()
+    ).then((responseJson) => {
         success && success(responseJson)
         complete && complete(responseJson)
     }).catch((err) => {
-        error(err)
+        error && error(err)
         complete && complete()
     })
 

@@ -12,6 +12,7 @@ import {
 }from 'react-native'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import Swiper from '@nart/react-native-swiper'
+import HomeFlatListView from '../components/HomeFlatListView'
 
 const {width:screenWidth, height:screenHeight} = Dimensions.get('window');
 
@@ -77,7 +78,7 @@ export default class Home extends PureComponent {
                             {
                                 this.swiperData.map((item, index) => {
                                     return(
-                                        <TouchableOpacity activeOpacity={1} key={index} style={styles.swipeItem} onPress={this.props.navigation.push('NewsSearch', {keyword:item})}>
+                                        <TouchableOpacity activeOpacity={1} key={index} style={styles.swipeItem} onPress={() => this.props.navigation.push('NewsSearch', {keyword:item})}>
                                             <Image source={require("./../../assets/images/i_search.png")} resizeMode={'contain'} style={styles.headerSearchImage} />
                                             <Text style={styles.headerSearchText}>{item}</Text>
                                         </TouchableOpacity>
@@ -114,9 +115,14 @@ export default class Home extends PureComponent {
                     >
                         {
                             this.tabArr.map(item => {
-                                return({
-                                    
-                                })
+                                return(
+                                    <HomeFlatListView
+                                        key={item.columnName}
+                                        tabLabel={item.columnName}
+                                        requestCode={item.requestCode}
+                                        navigation={this.props.navigation}
+                                    />
+                                )
                             })
                         }
                     </ScrollableTabView>
@@ -185,9 +191,5 @@ const styles = StyleSheet.create({
         height: 50,
         top: 0,
         right: 0,
-        /*shadowColor:'red',
-        shadowOffset:{h:-10,w:-10},
-        shadowRadius:3,
-        shadowOpacity:1,*/
     }
 })
