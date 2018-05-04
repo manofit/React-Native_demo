@@ -29,6 +29,8 @@ function formatData(headers, data) {
 
 export default ajax = ({url, method, data, dataType, headers, success, error, complete}) => {
 
+    console.log(url)
+
     let options = {}
 
     //默认method
