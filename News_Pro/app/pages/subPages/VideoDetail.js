@@ -89,7 +89,6 @@ export default class VideoDetail extends PureComponent {
                     videoCover={this.cover}
                     onChangeOrientation={this._onOrinentationChange}
                     onTapBackButton={this._onClickBackButton}
-                    enableSwitchScreen={true}
                 />
                 <View style={{flex: 1, backgroundColor: 'red'}}>
                     <ScrollView style={{backgroundColor: '#f8f8f8'}}>

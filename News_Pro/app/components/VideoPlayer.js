@@ -15,7 +15,7 @@ import Video from 'react-native-video'
 import Orientation from 'react-native-orientation'
 
 const screenWidth = Dimensions.get('window').width
-const defaultVideoHeight = screenWidth * 9 /16
+const defaultVideoHeight = screenWidth * 9 / 16
 
 export default class VideoPlayer extends React.Component {
 
@@ -24,7 +24,7 @@ export default class VideoPlayer extends React.Component {
         onTapBackButton: PropTypes.func,
     }
 
-    static defaultPros = {
+    static defaultProps = {
         videoWidth: screenWidth, //视频宽度
         videoHeight: defaultVideoHeight, //视频高度
         videoURL: '', //视频地址
@@ -184,21 +184,21 @@ export default class VideoPlayer extends React.Component {
                 {
                     this.state.isFullScreen ? null :
                     <TouchableOpacity
-                      style={{
-                        position:'absolute',
-                        top: 10,
-                        left: 10,
-                        width: 44,
-                        height: 44,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={this._onTapBackButton}
+                        style={{
+                            position:'absolute',
+                            top: 10,
+                            left: 10,
+                            width: 44,
+                            height: 44,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                        onPress={this._onTapBackButton}
                     >
-                      <Image
-                        source={require('../../assets/images/icon_back.png')}
-                        style={{width: 26, height: 26}}
-                      />
+                        <Image
+                            source={require('../../assets/images/icon_back.png')}
+                            style={{width: 26, height: 26}}
+                        />
                     </TouchableOpacity>
                 }
             }
