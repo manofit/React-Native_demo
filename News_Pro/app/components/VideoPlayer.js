@@ -38,7 +38,7 @@ export default class VideoPlayer extends React.Component {
         super(props);
         
         let hasCover = true
-        if (!this.props,videoCover){
+        if (!this.props.videoCover){
             hasCover = false
         }
 
@@ -137,13 +137,13 @@ export default class VideoPlayer extends React.Component {
                             style={{flex: 1}}
                             maximumTrackTintColor={'#999999'}
                             minimumTrackTintColor={'#00c06d'}
-                            thumbImage={require('../../assets/images/icon_control_slider.pn')}
+                            thumbImage={require('../../assets/images/icon_control_slider.png')}
                             value={this.state.currentTime}
                             minimumValue={0}
                             maximumValue={Number(this.state.duration)}
                             onValueChange={this._onSliderValueChange}
                         />
-                        <Text style={styles.timeText}>formatTime(this.state.duration)</Text>
+                        <Text style={styles.timeText}>{formatTime(this.state.duration)}</Text>
                         {
                             this.props.enableSwitchScreen ? 
                             <TouchableOpacity activeOpacity={0.3} onPress={this._onTapSwitchButton}>
