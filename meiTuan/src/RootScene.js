@@ -125,7 +125,21 @@ export default class RootScene extends PureComponent {
 
     render(){
         return(
-            <Navigator />
+            <Navigator 
+                onNavigationStateChange={
+                    (prevState, currentState) => {
+                        const currentScene = getCurrentRouteName(currentState)
+                        const previousScene = getCurrentRouteName(prevState)
+                        if (previousScene !== currentScene) {
+                            if (lightContentScenes.indexOf(currentScene) >= 0) {
+                                StatusBar.setBarStyle('light-content')
+                            } else {
+                                StatusBar.setBarStyle('dark-content')
+                            }
+                    }
+                }
+            }
+            />
         )
     }
     

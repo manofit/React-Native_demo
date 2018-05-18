@@ -10,7 +10,6 @@ import screen from '../../common/screen'
 import system from '../../common/system'
 import color from '../../widget/color'
 import HomeMenuItem from './HomeMenuItem'
-import { ECHILD } from 'constants';
 
 export default class HomeMenuView extends PureComponent {
 
@@ -61,8 +60,10 @@ export default class HomeMenuView extends PureComponent {
         return(
             <View style={styles.container}>
                 <ScrollView
+                    pagingEnabled
+                    horizontal
                     showsHorizontalScrollIndicator={false}
-                    onScroll={e => this.onScroll(e)}
+                    onScroll={(e) => this.onScroll(e)}
                 >
                     <View style={styles.menuContainer}>
                         {menuViews}
@@ -72,6 +73,7 @@ export default class HomeMenuView extends PureComponent {
                 <PageControl 
                     style={styles.PageControl}
                     numberOfPages={pageCount}
+                    hidesForSinglePage
                     currentPage={this.state.currentPage}
                     pageIndicatorTintColor='gray'
                     currentPageIndicatorTintColor={color.primary}
