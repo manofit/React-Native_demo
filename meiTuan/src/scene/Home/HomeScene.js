@@ -25,20 +25,12 @@ import GroupPurchaseCell from '../GroupPurchaseScene/GroupPurchaseCell'
 export default class HomeScene extends PureComponent {
 
     static navigationOptions = ({navigation}) => ({
-        // headerTitle: (
-        //     <TouchableOpacity style={styles.searchBar} >
-        //         <Image source={require('../../img/home/search_icon.png')} style={styles.searchIcon} />
-        //         <Paragraph>一点点</Paragraph>
-        //     </TouchableOpacity>
-        // ),
-        headerTitle: (() => {
-            return(
-                <TouchableOpacity style={styles.searchBar} >
-                    <Image source={require('../../img/home/search_icon.png')} style={styles.searchIcon} />
-                    <Paragraph>一点点</Paragraph>
-                </TouchableOpacity>
-            )
-        }),
+        headerTitle: (
+            <TouchableOpacity style={styles.searchBar} >
+                <Image source={require('../../img/home/search_icon.png')} style={styles.searchIcon} />
+                <Paragraph>一点点</Paragraph>
+            </TouchableOpacity>
+        ),
         headerRight: (
             <NavigationItem 
                 icon={require('../../img/mine/icon_navigation_item_message_white.png')}
