@@ -12,10 +12,10 @@
 | :-------------: |:-------------:| :------------:|
 | ![ios01](https://github.com/manofit/ScreenPics/blob/master/MeiTuan/iOS_0.png)     | ![ios02](https://github.com/manofit/ScreenPics/blob/master/MeiTuan/iOS_1.png) | ![ios03](https://github.com/manofit/ScreenPics/blob/master/MeiTuan/iOS_2.png) |
 
-# GoodList
-![goodsList](https://github.com/manofit/ScreenPics/blob/master/PicShow%26GoodsLIst/goodsList.png)
+# GoodList && PicShow
+|   GoodList      |      PicShow           |
+| :-------------: |:-------------:|
+|![goodsList](https://github.com/manofit/ScreenPics/blob/master/PicShow%26GoodsLIst/goodsList.png)|![PicShow](https://github.com/manofit/ScreenPics/blob/master/PicShow%26GoodsLIst/pic_show.gif)|
 
-# PicShow
-![PicShow](https://github.com/manofit/ScreenPics/blob/master/PicShow%26GoodsLIst/pic_show.gif)
 
 
