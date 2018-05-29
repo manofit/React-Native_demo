@@ -12,7 +12,6 @@ import {
 import RefreshListView, {RefreshState} from 'react-native-refresh-list-view'
 import {color, Button, NavigationItem} from '../../widget'
 import {Heading2, Heading3, Paragraph} from '../../widget/Text'
-import {screen, system} from '../../common'
 import api from '../../api'
 
 import GroupPurchaseCell from '../GroupPurchaseScene/GroupPurchaseCell'

@@ -12,9 +12,8 @@ import {
 }from 'react-native'
 import RefreshListView, {RefreshState} from 'react-native-refresh-list-view'
 import {Heading1, Heading2, Heading3, Paragraph} from '../../widget/Text'
-import {screen, system} from '../../common'
 import api from '../../api'
-import {color, SpacingView} from '../../widget';
+import {color, DetailCell ,SpacingView} from '../../widget';
 import OrderMenuItem from './OrderMenuItem'
 import GroupPurchaseCell from '../GroupPurchaseScene/GroupPurchaseCell'
 
@@ -76,7 +75,20 @@ export default class OrderScene extends PureComponent {
 
     renderHeader = () => {
         return(
-            <View></View>
+            <View style={styles.container}>
+                <DetailCell title='我的订单' subtitle='全部订单' style={{height:38}} />
+
+                <View style={styles.itemContainer}>
+                    <OrderMenuItem title='待付款' icon={require('../../img/order/order_tab_need_pay.png')} />
+                    <OrderMenuItem title='待使用' icon={require('../../img/order/order_tab_need_use.png')} />
+                    <OrderMenuItem title='待评价' icon={require('../../img/order/order_tab_need_review.png')} />
+                    <OrderMenuItem title='退款/售后' icon={require('../../img/order/order_tab_needoffer_aftersale.png')} />
+                </View>
+
+                <SpacingView />
+                
+                <DetailCell title='我的收藏' subtitle='查看全部' style={{height:38}} />
+            </View>
         )
     }
 

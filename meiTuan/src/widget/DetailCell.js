@@ -8,11 +8,28 @@ import {
     ViewPropTypes,
 } from 'react-native'
 import {Heading2, Heading3, Paragraph} from './Text'
-import {screen, system} from '../common'
 import Separator from './Separator'
 
 export default class DetailCell extends PureComponent {
+    render(){
+        let icon = this.props.image && <Image style={styles.icon} source={this.props.image} />
 
+        return(
+            <View style={styles.container}>
+                <TouchableOpacity>
+                    <View style={[styles.content, this.props.style]}>
+                        {icon}
+                        <Heading3>{this.props.title}</Heading3>
+                        <View style={{flex:1, backgroundColor:'blue'}}></View>
+                        <Paragraph style={{color:'#999999'}}>{this.props.subtitle}</Paragraph>
+                        <Image style={styles.arrow} source={require('../img/public/cell_arrow.png')} />
+                    </View>
+
+                    <Separator />
+                </TouchableOpacity>
+            </View>
+        )
+    }
 }
 
 const styles  = StyleSheet.create({
