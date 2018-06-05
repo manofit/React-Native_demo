@@ -5,6 +5,7 @@ import SpacingView from './SpacingView'
 import TabBarItem from './TabBarItem'
 import WebScene from './WebScene'
 import DetailCell from './DetailCell'
+import Separator from './Separator'
 
 export {
     color,
@@ -14,4 +15,5 @@ export {
     TabBarItem,
     WebScene,
     DetailCell,
+    Separator,
 }
