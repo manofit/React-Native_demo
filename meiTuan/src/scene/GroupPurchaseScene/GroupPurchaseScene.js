@@ -47,7 +47,7 @@ export default class GroupPurchaseScene extends PureComponent {
             let response = await fetch(recommendUrlWithId(info.id))
             let json = await response.json()
 
-            let dataList = json.data.deals.map(() => {
+            let dataList = json.data.deals.map((info) => {
                 return {
                     id: info.id,
                     imageUrl: info.imgurl,
@@ -72,13 +72,66 @@ export default class GroupPurchaseScene extends PureComponent {
         return item.id
     }
 
-    
+    renderHeader = () => {
+        let info = this.props.navigation.state.params.info
+
+        return(
+            <View>
+                <View>
+                    <Image style={styles.banner} source={{uri: info.imageUrl.replace('w.h', '480.0')}} />
+
+                    <View style={styles.topContainer}>
+                        <Heading2 style={{color: color.primary}}>￥</Heading2>
+                        <Heading1 style={{marginBottom: -8,}}>{info.price}</Heading1>
+                        <Paragraph style={{marginLeft: 10,}}>门市价：￥{(info.price * 1.1).toFixed(0)}</Paragraph>
+                        <View style={{flex:1}} />
+                        <Button 
+                            title='立即抢购'
+                            titleStyle={{color:'white', fontSize: 18,}}
+                            style={styles.buyButton}
+                        />
+                    </View>
+
+                    <SpacingView />
+
+                    <View style={styles.tagContainer}>
+                        <Image style={{width:20, height:20}} source={require('../../img/home/icon_deal_anytime_refund.png')} />
+                        <Paragraph style={{color:'#89b24f'}}>  随时退</Paragraph>
+                        <View style={{flex:1}}></View>
+                        <Paragraph>已售{1234}</Paragraph>
+                    </View>
+
+                    <SpacingView />
+
+                    <View style={styles.tipHeader}>
+                        <Heading3>看了本团购的用户还看了</Heading3>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    renderCell = (rowData) => {
+        return(
+            <GroupPurchaseCell 
+                info={rowData.item}
+                onPress={() => this.props.navigation.navigate('GroupPurchase', {info: rowData.item})}
+            />
+        )
+    }
 
 
     render(){
         return(
-            <View>
-                
+            <View style={styles.constainer}>
+                <RefreshListView 
+                    data={this.state.data}
+                    ListHeaderComponent={this.renderHeader}
+                    renderItem={this.renderCell}
+                    keyExtractor={this.keyExtractor}
+                    refreshState={this.state.refreshState}
+                    onHeaderRefresh={this.requestData}
+                />
             </View>
         )
     }
